@@ -8,6 +8,7 @@ var Student = {
     totalPage:1,//总页数
     pageNum:1,//当前的页数
     pageSize:10,//每页显示的条数
+    searchName:'',//当前搜索的名字
   },
   /**
    * 查询学生
@@ -16,6 +17,7 @@ var Student = {
     $.get('http://localhost:3000/api/stu',{
       pageNum:Student.data.pageNum,
       pageSize:Student.data.pageSize,
+      name:Student.data.searchName
     },  function (res) {
       if (res.code === 0){
         Student.data.list = res.data.list;
@@ -43,6 +45,24 @@ var Student = {
     })
   },
 
+  /**
+   * addStudent 添加学生
+   */
+
+  addStudent:function(name,age){
+    $.post('http://localhost:3000/api/stu',{
+      name:name,
+      age:age
+    },function(res){
+      if(res.code === 0){
+        $('#myModal').modal('hide');
+        alert('新增成功');
+        Student.findStudent();
+      }else{
+        alert(res.msg);
+      }
+    })
+  },
 
 /**
  * 
@@ -60,6 +80,32 @@ bind: function () {
       Student.findStudent();
     }
   })
+
+  $('#searchBtn').click(function(){
+    //1.获取 input 的值
+    let value = $('#searchInput').val();
+    Student.data.searchName = value;
+     // 需要将 pageNum 设置 为 1，因为可能没有这么多页的搜索到的数据
+     Student.data.pageNum = 1;
+    Student.findStudent();
+  })
+
+  //点击弹出模态框
+  $('#openModal').click(function () {
+    $('#myModal').modal();
+  })
+
+  
+  $('#addStudent').click(function () {
+    // 获取input的内容
+    let name = $('#stuName').val();
+    let age = $('#stuAge').val()
+    // 发送ajax请求
+
+    Student.addStudent(name, age);
+    
+  })
+
 }
 
 }

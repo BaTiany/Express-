@@ -48,7 +48,7 @@ const find = (req, res) => {
     let totalPage = Math.ceil(num / pageSize);
 
     // 2. 获取
-    StudentModel.find({ name: new RegExp(name) }).skip(pageSize * (pageNum - 1)).limit(pageSize).then(data => {
+    StudentModel.find({ name: new RegExp(name) }).skip(pageSize * (pageNum - 1)).limit(pageSize).sort({_id:-1}).then(data => {
       res.send({
         code: 0,
         msg: 'ok',
