@@ -63,7 +63,13 @@ const login = (req, res) =>{
             //登录成功
             res.send({
                 code:0,
-                msg:'登录成功'
+                msg:'登录成功',
+                data:{
+                    userInfo:{
+                        username:data.username,
+                        avatar:data.avatar
+                    }
+                }
             })
         }else{
             //密码不正确
